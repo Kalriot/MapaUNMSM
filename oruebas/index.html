@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruta Peatonal en San Marcos</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        #map { height: 500px; width: 100%; }
+        #buttons { margin-top: 10px; }
+        #distance { margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Calcula la Ruta Peatonal en San Marcos</h1>
+    <div id="map"></div>
+    <div id="buttons">
+        <button id="calculate-route">Calcular Ruta Peatonal</button>
+        <button id="reset-locations">Reiniciar Ubicaciones</button>
+    </div>
+    <div id="distance">Distancia: <span id="distance-value">0</span> km</div>
+
+    <!-- scripts-->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6.5.0/turf.min.js"></script> 
+    <script src="senderos.js"></script> 
+    <script src="conectarSegmentos.js"></script> 
+    <script src="app.js"></script> 
+</body>
+</html>
