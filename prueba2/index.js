@@ -4,7 +4,7 @@ var mapa = L.map("contenedor-del-mapa", {
     fullscreenControlOptions: {
         position: 'topleft'
     }
-}).setView([-12.056119215, -77.0843319000621], 16);
+}).setView([-12.056119215, -77.0843319000621], 17); // Cambiar el nivel de zoom a 18 para acercar más el mapa
 
 // Agregar capa base de OpenStreetMap
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png?", {}).addTo(mapa);
@@ -47,13 +47,27 @@ function construirGrafo(geoJSON) {
 }
 
 // Función para encontrar el nodo más cercano a un punto dado
-function encontrarNodoMasCercano(latlng) {
+function encontrarNodoMasCercano(latLng) {
     let closestNode = null;
     let minDistance = Infinity;
-    const point = turf.point([latlng.lng, latlng.lat]);
+
+    // Validar que latLng tenga propiedades lng y lat que sean números
+    if (isNaN(latLng.lng) || isNaN(latLng.lat)) {
+        console.error("Coordenadas no válidas:", latLng);
+        return null;
+    }
+
+    const point = turf.point([latLng.lng, latLng.lat]);
 
     for (const node in grafo) {
         const [lat, lng] = node.split(',').map(Number);
+
+        // Asegurarse de que las coordenadas sean válidas
+        if (isNaN(lat) || isNaN(lng)) {
+            console.error(`Coordenadas no válidas para el nodo: ${node}`);
+            continue; // Si las coordenadas no son válidas, pasar al siguiente nodo
+        }
+
         const distance = turf.distance(point, turf.point([lng, lat]), { units: 'meters' });
 
         if (distance < minDistance) {
@@ -159,6 +173,12 @@ L.control.buttons = L.Control.extend({
                 endConnectionLayer = null;
             }
 
+            // Eliminar la capa de la ruta
+            if (rutaLayer) {
+                mapa.removeLayer(rutaLayer);
+                rutaLayer = null;
+            }
+
             // Limpiar la distancia mostrada
             const distanceElement = document.getElementById('distance-value');
             if (distanceElement) {
@@ -177,3 +197,6 @@ L.control.buttons = L.Control.extend({
 
 // Añadir el control de botones al mapa
 mapa.addControl(new L.control.buttons({ position: 'topright' }));
+
+// Variable para almacenar la capa de la ruta
+let rutaLayer;

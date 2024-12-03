@@ -112,7 +112,7 @@ body{
     background-color: #e2f1f8;
     color: #ffbc0e;
     transform: scale(1.1);}
- 
+
 /* Estilo para el texto superior "FISI" */
 /* Estilo para el contenedor del control de botones */
 .leaflet-control-buttons {
@@ -169,6 +169,51 @@ body{
     background-color: #f0f0f0;
 }
 
+#suggestions-list li.active {
+    background-color: #b0c4de; /* Color de fondo más oscuro para el elemento activo */
+    font-weight: bold; /* Poner en negrita */
+}
+
 .search-container {
     position: relative;
+    width: 100%; /* Ajustar el ancho al 100% */
+    margin: 10px auto; /* Centrar el contenedor */
+    display: flex; /* Usar flexbox para alinear los elementos en la misma línea */
+    align-items: center; /* Alinear verticalmente los elementos */
+    gap: 10px; /* Espacio entre los elementos */
+}
+
+.search-container input {
+    flex: 1; /* Hacer que los inputs ocupen el mismo espacio */
+}
+
+.search-container button {
+    padding: 10px 20px; /* Ajustar el padding del botón */
+}
+
+.suggestions-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #ccc;
+    max-height: 150px; /* Mostrar solo 5 elementos */
+    overflow-y: auto; /* Barra de desplazamiento */
+    position: absolute;
+    width: 45%;
+    background-color: white;
+    z-index: 1000;
+}
+
+.suggestions-list li {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.suggestions-list li:hover {
+    background-color: #f0f0f0;
+}
+
+.suggestions-list li.active {
+    background-color: #b0c4de; /* Color de fondo más oscuro para el elemento activo */
+    font-weight: bold; /* Poner en negrita */
 }

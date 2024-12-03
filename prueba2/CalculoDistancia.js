@@ -1,5 +1,11 @@
 // Función para calcular la ruta
 function calcularRuta(startLatLng, endLatLng) {
+    // Validar que startLatLng y endLatLng tengan propiedades lng y lat que sean números
+    if (isNaN(startLatLng.lng) || isNaN(startLatLng.lat) || isNaN(endLatLng.lng) || isNaN(endLatLng.lat)) {
+        console.error("Coordenadas no válidas:", startLatLng, endLatLng);
+        return;
+    }
+
     const startNode = encontrarNodoMasCercano(startLatLng);
     const endNode = encontrarNodoMasCercano(endLatLng);
 

@@ -1,4 +1,3 @@
-
 function conectarSegmentos(geoJSON, umbralDistancia) {
     const features = geoJSON.features;
     const conexiones = []; // Almacena las conexiones únicas
@@ -10,6 +9,9 @@ function conectarSegmentos(geoJSON, umbralDistancia) {
 
         const endPointA = coordsA[coordsA.length - 1];
 
+        let closestFeature = null;
+        let minDistancia = Infinity;
+
         features.slice(index + 1).forEach(featureB => {
             const coordsB = featureB.geometry.coordinates;
 
@@ -19,18 +21,24 @@ function conectarSegmentos(geoJSON, umbralDistancia) {
 
             const distancia = turf.distance(turf.point(endPointA), turf.point(startPointB), { units: 'meters' });
 
-            if (distancia <= umbralDistancia) {
-                const lineaConexion = {
-                    type: "Feature",
-                    geometry: {
-                        type: "LineString",
-                        coordinates: [endPointA, startPointB]
-                    },
-                    properties: { connected: true }
-                };
-                conexiones.push(lineaConexion);
+            if (distancia <= umbralDistancia && distancia < minDistancia) {
+                minDistancia = distancia;
+                closestFeature = featureB;
             }
         });
+
+        if (closestFeature) {
+            const startPointB = closestFeature.geometry.coordinates[0];
+            const lineaConexion = {
+                type: "Feature",
+                geometry: {
+                    type: "LineString",
+                    coordinates: [endPointA, startPointB]
+                },
+                properties: { connected: true }
+            };
+            conexiones.push(lineaConexion);
+        }
     });
 
     return {
