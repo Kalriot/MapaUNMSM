@@ -23,13 +23,6 @@
            </ul>            
         </nav>
     </header> 
-    <div class="search-container">
-        <input type="text" id="search-start" placeholder="Buscar facultad de inicio..." autocomplete="off" />
-        <ul id="suggestions-start" class="suggestions-list"></ul>
-        <input type="text" id="search-end" placeholder="Buscar facultad de destino..." autocomplete="off" />
-        <ul id="suggestions-end" class="suggestions-list"></ul>
-        <button id="search-route">Buscar</button> <!-- Nuevo botón de búsqueda -->
-    </div>
     <section class="mapa">
         <div id="contenedor-del-mapa"></div>
     </section>
@@ -37,13 +30,12 @@
     <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6.5.0/turf.min.js"></script> 
     <script src="conectarSegmentos.js"></script> 
     <script src="CalculoDistancia.js"></script> 
-    <script src="buscador.js"></script> 
-
     <script src="index.js"></script> 
     <script src="GeoJSON/facultad.js"></script> 
     <script src="GeoJSON/universidad.js"></script> 
     <script src="GeoJSON/Manejo.js"></script> 
     <script src="GeoJSON/PuntosFacultad.js"></script> 
+    <script src="buscador.js"></script> 
 
 </body>
 </html>

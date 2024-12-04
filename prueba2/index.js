@@ -194,9 +194,52 @@ L.control.buttons = L.Control.extend({
         return container;
     }
 });
+// Crear un control personalizado para el buscador
+L.Control.Search = L.Control.extend({
+    onAdd: function (map) {
+        const container = L.DomUtil.create('div', 'leaflet-control-search');
+
+        // Input para el punto de inicio
+        const searchStartInput = L.DomUtil.create('input', 'search-input', container);
+        searchStartInput.id = 'search-start';
+        searchStartInput.placeholder = 'Buscar facultad de inicio...';
+
+        // Lista de sugerencias para el punto de inicio
+        const suggestionsStartList = L.DomUtil.create('ul', 'suggestions-list', container);
+        suggestionsStartList.id = 'suggestions-start';
+
+        // Input para el punto de destino
+        const searchEndInput = L.DomUtil.create('input', 'search-input', container);
+        searchEndInput.id = 'search-end';
+        searchEndInput.placeholder = 'Buscar facultad de destino...';
+
+        // Lista de sugerencias para el punto de destino
+        const suggestionsEndList = L.DomUtil.create('ul', 'suggestions-list', container);
+        suggestionsEndList.id = 'suggestions-end';
+
+        // Botón de búsqueda
+        const searchButton = L.DomUtil.create('button', 'search-button', container);
+        searchButton.id = 'search-route';
+        searchButton.textContent = 'Buscar';
+
+        // Prevenir que los eventos de los inputs se propaguen al mapa
+        L.DomEvent.disableClickPropagation(container);
+
+        return container;
+    }
+});
+
+// Añadir el control del buscador al mapa
+mapa.addControl(new L.Control.Search({ position: 'topleft' }));
 
 // Añadir el control de botones al mapa
 mapa.addControl(new L.control.buttons({ position: 'topright' }));
 
 // Variable para almacenar la capa de la ruta
 let rutaLayer;
+
+// Inicializar el buscador después de que el mapa se haya cargado
+document.addEventListener('DOMContentLoaded', function() {
+    // Inicializar las funciones de búsqueda
+    initSearch();
+});

@@ -147,6 +147,64 @@ body{
     outline: none;
     border-color: #007bff;
 }
+.leaflet-control-search {
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    width: 250px;
+}
+
+.search-input {
+    width: calc(100% - 20px);
+    margin-bottom: 5px;
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.suggestions-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 150px;
+    overflow-y: auto;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.suggestions-list li {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.suggestions-list li:hover {
+    background-color: #f0f0f0;
+}
+
+.suggestions-list li.active {
+    background-color: #b0c4de; /* Color de fondo más oscuro para el elemento activo */
+    font-weight: bold; /* Poner en negrita */
+}
+
+.search-button {
+    display: block;
+    width: 100%;
+    padding: 5px;
+    font-size: 14px;
+    background-color: #0078d7;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.search-button:hover {
+    background-color: #005a9e;
+}
+
 #suggestions-list {
     list-style-type: none;
     padding: 0;
@@ -188,14 +246,13 @@ body{
 }
 
 .search-container button {
-    padding: 10px 20px; /* Ajustar el padding del botón */
+    padding: 1px 2px; /* Ajustar el padding del botón */
 }
 
 .suggestions-list {
     list-style-type: none;
     padding: 0;
     margin: 0;
-    border: 1px solid #ccc;
     max-height: 150px; /* Mostrar solo 5 elementos */
     overflow-y: auto; /* Barra de desplazamiento */
     position: absolute;
@@ -217,3 +274,4 @@ body{
     background-color: #b0c4de; /* Color de fondo más oscuro para el elemento activo */
     font-weight: bold; /* Poner en negrita */
 }
+

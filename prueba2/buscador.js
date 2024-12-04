@@ -6,9 +6,9 @@ const suggestionsEndList = document.getElementById("suggestions-end");
 
 // Variable global para almacenar las rutas desde el GeoJSON
 let rutas = [];
-
 const puntosfacultades = {
     "facultades": [
+        
         {
             "nombre": "Facultad de Letras y Ciencias Humanas",
             "coordenadas": [-12.057463861581558, -77.08146536455192]
@@ -19,7 +19,7 @@ const puntosfacultades = {
         },
         {
             "nombre": "Facultad de Ciencias Económicas",
-            "coordenadas": [-12.058064327341, -77.08122303399627]
+            "coordenadas": [-12.058038712692678, -77.08078514601218]
         },
         {
             "nombre": "Facultad de Derecho y Ciencia Política",
@@ -38,7 +38,7 @@ const puntosfacultades = {
         },
         {
             "nombre": "Facultad de Ingeniería de Sistemas e Informática",
-            "coordenadas": [-12.053674637174703, -77.08578097418183]
+            "coordenadas": [-12.053664597852691, -77.085761776805]
         },
         {
             "nombre": "Facultad de Ciencias Biológicas",
@@ -81,9 +81,73 @@ const puntosfacultades = {
                 [-12.054146209481669, -77.0875649478706],
                 [-12.054284227242904, -77.08725446274323]
             ]
+        },
+        {
+            "nombre": "Facultad de Ingeniería Geológica",
+            "coordenadas": [-12.060282573272586, -77.0846788254117]
+        },
+        {
+            "nombre": "Facultad de Educación",
+            "coordenadas": [-12.054664325899767, -77.08475564091783]
+        },
+        {
+            "nombre": "Facultad de Psicología",
+            "coordenadas": [-12.053552309254608, -77.08679751061341]
+        },
+        {
+            "nombre": "Facultad de Ingeniería Electrónica y Eléctrica",
+            "coordenadas": [-12.055238551879087, -77.08685016604964]
+        },
+        {
+            "nombre": "Instituto de Investigación Ciencias Físicas",
+            "coordenadas": [-12.059264961454534, -77.08127277352563]
+        },
+        {
+            "nombre": "Centro de Extensión Universitaria y Proyección Social",
+            "coordenadas": [-12.059924023431494, -77.08100435516283]
+        },
+        {
+            "nombre": "Escuela de Mecánica de Fluidos",
+            "coordenadas": [-12.056801770154076, -77.08693675108465]
+        },
+        {
+            "nombre": "Escuela de Enfermería y Tecnología Médica",
+            "coordenadas": [
+                [-12.053365106109856, -77.08749268438356],
+                [-12.053433554673814, -77.08685226086686],
+                [-12.05297837140381, -77.0865512968058]
+            ]
+        },
+        {
+            "nombre": "Escuela de Posgrado",
+            "coordenadas": [-12.05235301227514, -77.08612471209841]
+        },
+        {
+            "nombre": "Centro Preuniversitario UNMSM",
+            "coordenadas": [-12.052211095502493, -77.08535248432604]
+        },
+        {
+            "nombre": "Escuela de Economía Pública",
+            "coordenadas": [-12.053476666195667, -77.08627156889185]
+        },
+        {
+            "nombre": "Escuela de Ciencias Políticas",
+            "coordenadas": [-12.05875306420291, -77.08049166883829]
+        },
+        {
+            "nombre": "Biblioteca Central Pedro Zulen",
+            "coordenadas": [-12.055915723290125, -77.08589613153826]
+        },
+        {
+            "nombre": "Facultad de Odontología",
+            "coordenadas": [
+                [-12.054826618175014, -77.08592935553922],
+                [-12.054160543263292, -77.08576182852164]
+            ]
         }
     ]
 };
+
 
 // Función para cargar el GeoJSON y extraer las rutas (por ejemplo, usando @id)
 fetch('DatFacultades.json')
@@ -282,6 +346,16 @@ function calcularRuta(startLatLng, endLatLng) {
                 return [lng, lat];
             });
 
+            // Mostrar en el console.log los nombres de las facultades que se unen
+            const facultadesUnidas = rutaNodos.map(node => {
+                const [lat, lng] = node.split(',').map(Number);
+                const facultad = puntosfacultades.facultades.find(f => 
+                    f.coordenadas.some(coord => coord[0] === lat && coord[1] === lng)
+                );
+                return facultad ? facultad.nombre : `${lat},${lng}`;
+            });
+            console.log("Facultades que se unen:", facultadesUnidas);
+
             // Crear la nueva línea de la ruta (la ruta calculada)
             const routeLine = turf.lineString(rutaCoordenadas);
 
@@ -306,3 +380,44 @@ function calcularRuta(startLatLng, endLatLng) {
         }
     }
 }
+
+// Función para inicializar la búsqueda
+function initSearch() {
+    // Obtener los campos de búsqueda
+    const searchStartInput = document.getElementById("search-start");
+    const suggestionsStartList = document.getElementById("suggestions-start");
+    const searchEndInput = document.getElementById("search-end");
+    const suggestionsEndList = document.getElementById("suggestions-end");
+
+    // Verificar que los elementos existan
+    if (!searchStartInput || !suggestionsStartList || !searchEndInput || !suggestionsEndList) {
+        console.error("No se encontraron los elementos de búsqueda en el DOM.");
+        return;
+    }
+
+    // Configurar eventos de búsqueda
+    searchStartInput.addEventListener("input", (event) => {
+        const query = event.target.value;
+        if (query) {
+            showSuggestions(query, suggestionsStartList);
+        } else {
+            suggestionsStartList.innerHTML = ""; // Limpiar cuando el campo está vacío
+        }
+    });
+
+    searchEndInput.addEventListener("input", (event) => {
+        const query = event.target.value;
+        if (query) {
+            showSuggestions(query, suggestionsEndList);
+        } else {
+            suggestionsEndList.innerHTML = ""; // Limpiar cuando el campo está vacío
+        }
+    });
+
+    // Configurar eventos de teclado
+    searchStartInput.addEventListener("keydown", (event) => handleKeyDown(event, suggestionsStartList, searchStartInput));
+    searchEndInput.addEventListener("keydown", (event) => handleKeyDown(event, suggestionsEndList, searchEndInput));
+}
+
+// Llamar a la función de inicialización
+initSearch();
