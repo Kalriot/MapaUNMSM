@@ -1,6 +1,6 @@
 function conectarSegmentos(geoJSON, umbralDistancia) {
     const features = geoJSON.features;
-    const conexiones = []; // Almacena las conexiones únicas
+    const conexiones = [];
 
     features.forEach((featureA, index) => {
         const coordsA = featureA.geometry.coordinates;

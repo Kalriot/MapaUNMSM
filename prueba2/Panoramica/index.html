@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<!--projecttitle--><title>Paquito</title><!--projecttitle-end-->
+		<!--projectdescription--><meta name="description" content="Baruuuuurururuurru"><!--projectdescription-end-->
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width, shrink-to-fit=no">
+		
+		<link rel="stylesheet" type="text/css" href="css/font-awesome.css">
+		<link rel="stylesheet" type="text/css" href="style.css">
+		
+		<!-- Insert this line above script imports  -->
+		<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+		
+		<script src="imagedata.js"></script>
+		<script src="jquery.js"></script>
+		<script src="three.min.js"></script>
+		<script src="panolens.min.js"></script>
+		
+		<!-- Insert this line after script imports -->
+		<script>if (window.module) module = window.module;</script>
+		
+		<style>
+		
+			
+						
+			/* SCROLLBAR STYLING */
+			/* width */
+			::-webkit-scrollbar {
+				width: 0.25em;
+				height: 0.25em;
+			}
+			/* Track */
+			::-webkit-scrollbar-track {
+				background: #2c3643; 
+			}
+			/* Handle */
+			::-webkit-scrollbar-thumb {
+				background: #0d9e59; 
+				transition: background .5s;
+			}
+			/* Handle on hover */
+			::-webkit-scrollbar-thumb:hover {
+				background: #00e075; 
+			}
+
+
+			html, body {
+				margin: 0;
+				width: 100%;
+				height: 100%;
+				overflow: hidden;
+				background-color: #000;
+				color; black;
+			}
+
+			a:link, a:visited{
+				color: #bdc3c7;	
+			}
+
+			.fullwrapper{
+				position: fixed;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background-color: black;
+			}
+			
+			#container {
+                width: 100%;
+                height: 100%;
+            }
+			
+			#tmp{
+				position: fixed;
+				top: 0;
+				left: 0; 
+				right: 0;
+				bottom: 0;
+				padding: 3em;
+				background-color: rgba(0,0,0,.5);
+				backdrop-filter: blur(5px);
+				display: none;
+			}
+		</style>
+	</head>
+	<body id="body">
+	    <div id="container" style="color: black;"></div>
+    	
+		
+		
+		<!--customhtml--><div class='customhotspot' id='testpanorama'></div><div class='customhotspot' id='OdontoEsquina'></div><div class='customhotspot' id='OdontoPuerta'></div><div class='customhotspot' id='Fisidrecha'></div><div class='customhotspot' id='TecnologiaMedica'></div><div class='customhotspot' id='Minas'></div><div class='customhotspot' id='prevTecnologia'></div><div class='customhotspot' id='EsquinaEconomica'></div><div class='customhotspot' id='PuertaEconomica'></div><div class='customhotspot' id='Odontoderecha'></div><div class='customhotspot' id='aTRASODONT'></div><div class='customhotspot' id='fISIpUERTA'></div><!--customhtml-end-->
+		
+		<div id="tmp">
+			<div style="width: 100%; height: 100%; overflow: hidden; overflow-y: auto; box-sizing: border-box; position: relative;" id="tmpcontent"></div>
+			<div class="mediaclosebutton" onclick="hideTemp()"><i class="fa fa-times-circle"></i></div>
+		</div>
+
+		<div id="loading" class="fullwrapper" style="display: table; width: 100%; height: 100%;">
+    		<div style="display: table-cell; vertical-align: middle; text-align: center; color: white; font-size: 30px; padding: 50px;">
+    			<!--loadingtext-->Loading...<!--loadingtext-end-->
+				<div id="loadingperc" style="font-size:12px;"></div>
+    		</div>
+    	</div>
+		
+    	<script>
+			
+            var container = document.querySelector( '#container' );
+			/*panolens*/
+var viewer = new PANOLENS.Viewer( { container: container , controlBar: false,  output: 'console' , autoHideInfospot: false, } );
+/*panolens-end*/
+			
+			viewer.addUpdateCallback(function(){});
+			
+			/*panoramas*/
+var testpanorama = new PANOLENS.ImagePanorama( "panoramas/testpanorama.jpg" );
+			testpanorama.addEventListener('progress', onProgress);
+			testpanorama.addEventListener('load', function(e){
+				endLoading();
+			});
+			testpanorama.addEventListener('enter', function(e){
+				endLoading();
+			});
+			testpanorama.addEventListener('click', function(e){
+			});
+
+viewer.add( testpanorama );
+var OdontoEsquina = new PANOLENS.ImagePanorama( "panoramas/OdontoEsquina.jpeg" );
+			OdontoEsquina.addEventListener('progress', onProgress);
+			OdontoEsquina.addEventListener('load', function(e){
+				endLoading();
+			});
+			OdontoEsquina.addEventListener('enter', function(e){
+				endLoading();
+			});
+			OdontoEsquina.addEventListener('click', function(e){
+			});
+
+var infospotOdontoEsquina0 = new PANOLENS.Infospot( 512, hotspotIcons[6].data, true );
+					infospotOdontoEsquina0.position.set( -230.52, 208.96, -4979.71 );
+					OdontoEsquina.add(infospotOdontoEsquina0);
+infospotOdontoEsquina0.addEventListener('click', function(){
+ChangePanorama('OdontoPuerta');
+});
+var infospotOdontoEsquina1 = new PANOLENS.Infospot( 512, hotspotIcons[6].data, true );
+					infospotOdontoEsquina1.position.set( 4961.30, 531.03, -130.95 );
+					OdontoEsquina.add(infospotOdontoEsquina1);
+infospotOdontoEsquina1.addEventListener('click', function(){
+ChangePanorama('prevTecnologia');
+});
+viewer.add( OdontoEsquina );
+var OdontoPuerta = new PANOLENS.ImagePanorama( "panoramas/OdontoPuerta.jpeg" );
+			OdontoPuerta.addEventListener('progress', onProgress);
+			OdontoPuerta.addEventListener('load', function(e){
+				endLoading();
+			});
+			OdontoPuerta.addEventListener('enter', function(e){
+				endLoading();
+			});
+			OdontoPuerta.addEventListener('click', function(e){
+			});
+
+var infospotOdontoPuerta0 = new PANOLENS.Infospot( 512, hotspotIcons[6].data, true );
+					infospotOdontoPuerta0.position.set( 804.98, 327.82, 4914.87 );
+					OdontoPuerta.add(infospotOdontoPuerta0);
+infospotOdontoPuerta0.addEventListener('click', function(){
+ChangePanorama('OdontoEsquina');
+});
+var infospotOdontoPuerta1 = new PANOLENS.Infospot( 512, hotspotIcons[6].data, true );
+					infospotOdontoPuerta1.position.set( -972.22, 286.67, -4890.01 );
+					OdontoPuerta.add(infospotOdontoPuerta1);
+infospotOdontoPuerta1.addEventListener('click', function(){
+ChangePanorama('Odontoderecha');
+});
+viewer.add( OdontoPuerta );
+var Fisidrecha = new PANOLENS.ImagePanorama( "panoramas/Fisidrecha.jpeg" );
+			Fisidrecha.addEventListener('progress', onProgress);
+			Fisidrecha.addEventListener('load', function(e){
+				endLoading();
+			});
+			Fisidrecha.addEventListener('enter', function(e){
+				endLoading();
+			});
+			Fisidrecha.addEventListener('click', function(e){
+			});
+
+var infospotFisidrecha0 = new PANOLENS.Infospot( 512, hotspotIcons[6].data, true );
+					infospotFisidrecha0.position.set( 658.43, 175.97, 4944.11 );
+					Fisidrecha.add(infospotFisidrecha0);
+infospotFisidrecha0.addEventListener('click', function(){
+ChangePanorama('fISIpUERTA');
+});
+var infospotFisidrecha1 = new PANOLENS.Infospot( 512, hotspotIcons[6].data, true );
+					infospotFisidrecha1.position.set( -4970.06, 154.56, 455.50 );
+					Fisidrecha.add(infospotFisidrecha1);
+infospotFisidrecha1.addEventListener('click', function(){
+ChangePanorama('aTRASODONT');
+});
+viewer.add( Fisidrecha );
+var TecnologiaMedica = new PANOLENS.ImagePanorama( "panoramas/TecnologiaMedica.jpeg" );
+			TecnologiaMedica.addEventListener('progress', onProgress);
+			TecnologiaMedica.addEventListener('load', function(e){
+				endLoading();
+			});
+			TecnologiaMedica.addEventListener('enter', function(e){
+				endLoading();
+			});
+			TecnologiaMedica.addEventListener('click', function(e){
+			});
+
+var infospotTecnologiaMedica0 = new PANOLENS.Infospot( 512, hotspotIcons[6].data, true );
+					infospotTecnologiaMedica0.position.set( 500.39, 203.69, 4965.77 );
+					TecnologiaMedica.add(infospotTecnologiaMedica0);
+infospotTecnologiaMedica0.addEventListener('click', function(){
+ChangePanorama('Minas');
+});
+var infospotTecnologiaMedica1 = new PANOLENS.Infospot( 512, hotspotIcons[6].data, true );
+					infospotTecnologiaMedica1.position.set( -1526.52, 211.98, -4751.65 );
+					TecnologiaMedica.add(infospotTecnologiaMedica1);
+infospotTecnologiaMedica1.addEventListener('click', function(){
+ChangePanorama('prevTecnologia');
+});
+viewer.add( TecnologiaMedica );
+var Minas = new PANOLENS.ImagePanorama( "panoramas/Minas.jpeg" );
+			Minas.addEventListener('progress', onProgress);
+			Minas.addEventListener('load', function(e){
+				endLoading();
+			});
+			Minas.addEventListener('enter', function(e){
+				endLoading();
+			});
+			Minas.addEventListener('click', function(e){
+			});
+
+var infospotMinas0 = new PANOLENS.Infospot( 512, hotspotIcons[6].data, true );
+					infospotMinas0.position.set( -4660.61, 230.62, 1766.48 );
+					Minas.add(infospotMinas0);
+infospotMinas0.addEventListener('click', function(){
+ChangePanorama('TecnologiaMedica');
+});
+viewer.add( Minas );
+var prevTecnologia = new PANOLENS.ImagePanorama( "panoramas/prevTecnologia.jpeg" );
+			prevTecnologia.addEventListener('progress', onProgress);
+			prevTecnologia.addEventListener('load', function(e){
+				endLoading();
+			});
+			prevTecnologia.addEventListener('enter', function(e){
+				endLoading();
+			});
+			prevTecnologia.addEventListener('click', function(e){
+			});
+
+var infospotprevTecnologia0 = new PANOLENS.Infospot( 512, hotspotIcons[6].data, true );
+					infospotprevTecnologia0.position.set( -1647.61, 48.85, -4713.87 );
+					prevTecnologia.add(infospotprevTecnologia0);
+infospotprevTecnologia0.addEventListener('click', function(){
+ChangePanorama('PuertaEconomica');
+});
+var infospotprevTecnologia1 = new PANOLENS.Infospot( 512, hotspotIcons[6].data, true );
+					infospotprevTecnologia1.position.set( 295.50, 112.44, 4980.10 );
+					prevTecnologia.add(infospotprevTecnologia1);
+infospotprevTecnologia1.addEventListener('click', function(){
+ChangePanorama('prevTecnologia');
+});
+viewer.add( prevTecnologia );
+var EsquinaEconomica = new PANOLENS.ImagePanorama( "panoramas/EsquinaEconomica.jpeg" );
+			EsquinaEconomica.addEventListener('progress', onProgress);
+			EsquinaEconomica.addEventListener('load', function(e){
+				endLoading();
+			});
+			EsquinaEconomica.addEventListener('enter', function(e){
+				endLoading();
+			});
+			EsquinaEconomica.addEventListener('click', function(e){
+			});
+
+var infospotEsquinaEconomica0 = new PANOLENS.Infospot( 512, hotspotIcons[6].data, true );
+					infospotEsquinaEconomica0.position.set( -993.46, -53.81, -4895.90 );
+					EsquinaEconomica.add(infospotEsquinaEconomica0);
+infospotEsquinaEconomica0.addEventListener('click', function(){
+ChangePanorama('fISIpUERTA');
+});
+var infospotEsquinaEconomica1 = new PANOLENS.Infospot( 512, hotspotIcons[6].data, true );
+					infospotEsquinaEconomica1.position.set( 2669.84, -67.39, 4216.68 );
+					EsquinaEconomica.add(infospotEsquinaEconomica1);
+infospotEsquinaEconomica1.addEventListener('click', function(){
+ChangePanorama('PuertaEconomica');
+});
+viewer.add( EsquinaEconomica );
+var PuertaEconomica = new PANOLENS.ImagePanorama( "panoramas/PuertaEconomica.jpeg" );
+			PuertaEconomica.addEventListener('progress', onProgress);
+			PuertaEconomica.addEventListener('load', function(e){
+				endLoading();
+			});
+			PuertaEconomica.addEventListener('enter', function(e){
+				endLoading();
+			});
+			PuertaEconomica.addEventListener('click', function(e){
+			});
+
+var infospotPuertaEconomica0 = new PANOLENS.Infospot( 512, hotspotIcons[6].data, true );
+					infospotPuertaEconomica0.position.set( -3610.56, 222.88, -3438.45 );
+					PuertaEconomica.add(infospotPuertaEconomica0);
+infospotPuertaEconomica0.addEventListener('click', function(){
+ChangePanorama('EsquinaEconomica');
+});
+var infospotPuertaEconomica1 = new PANOLENS.Infospot( 512, hotspotIcons[6].data, true );
+					infospotPuertaEconomica1.position.set( 595.81, 99.93, 4957.05 );
+					PuertaEconomica.add(infospotPuertaEconomica1);
+infospotPuertaEconomica1.addEventListener('click', function(){
+ChangePanorama('prevTecnologia');
+});
+viewer.add( PuertaEconomica );
+var Odontoderecha = new PANOLENS.ImagePanorama( "panoramas/Odontoderecha.jpeg" );
+			Odontoderecha.addEventListener('progress', onProgress);
+			Odontoderecha.addEventListener('load', function(e){
+				endLoading();
+			});
+			Odontoderecha.addEventListener('enter', function(e){
+				endLoading();
+			});
+			Odontoderecha.addEventListener('click', function(e){
+			});
+
+var infospotOdontoderecha0 = new PANOLENS.Infospot( 512, hotspotIcons[6].data, true );
+					infospotOdontoderecha0.position.set( -692.07, 371.05, -4931.03 );
+					Odontoderecha.add(infospotOdontoderecha0);
+infospotOdontoderecha0.addEventListener('click', function(){
+ChangePanorama('aTRASODONT');
+});
+var infospotOdontoderecha1 = new PANOLENS.Infospot( 512, hotspotIcons[6].data, true );
+					infospotOdontoderecha1.position.set( 4924.25, 218.67, -773.12 );
+					Odontoderecha.add(infospotOdontoderecha1);
+infospotOdontoderecha1.addEventListener('click', function(){
+ChangePanorama('fISIpUERTA');
+});
+viewer.add( Odontoderecha );
+var aTRASODONT = new PANOLENS.ImagePanorama( "panoramas/aTRASODONT.jpeg" );
+			aTRASODONT.addEventListener('progress', onProgress);
+			aTRASODONT.addEventListener('load', function(e){
+				endLoading();
+			});
+			aTRASODONT.addEventListener('enter', function(e){
+				endLoading();
+			});
+			aTRASODONT.addEventListener('click', function(e){
+			});
+
+var infospotaTRASODONT0 = new PANOLENS.Infospot( 512, hotspotIcons[6].data, true );
+					infospotaTRASODONT0.position.set( 1030.91, 187.44, 4884.66 );
+					aTRASODONT.add(infospotaTRASODONT0);
+infospotaTRASODONT0.addEventListener('click', function(){
+ChangePanorama('Odontoderecha');
+});
+var infospotaTRASODONT1 = new PANOLENS.Infospot( 512, hotspotIcons[6].data, true );
+					infospotaTRASODONT1.position.set( 4867.15, 581.40, -947.23 );
+					aTRASODONT.add(infospotaTRASODONT1);
+infospotaTRASODONT1.addEventListener('click', function(){
+ChangePanorama('Fisidrecha');
+});
+var infospotaTRASODONT2 = new PANOLENS.Infospot( 512, hotspotIcons[6].data, true );
+					infospotaTRASODONT2.position.set( -4887.00, 286.45, 991.34 );
+					aTRASODONT.add(infospotaTRASODONT2);
+infospotaTRASODONT2.addEventListener('click', function(){
+ChangePanorama('OdontoPuerta');
+});
+viewer.add( aTRASODONT );
+var fISIpUERTA = new PANOLENS.ImagePanorama( "panoramas/fISIpUERTA.jpeg" );
+			fISIpUERTA.addEventListener('progress', onProgress);
+			fISIpUERTA.addEventListener('load', function(e){
+				endLoading();
+			});
+			fISIpUERTA.addEventListener('enter', function(e){
+				endLoading();
+			});
+			fISIpUERTA.addEventListener('click', function(e){
+			});
+
+var infospotfISIpUERTA0 = new PANOLENS.Infospot( 512, hotspotIcons[6].data, true );
+					infospotfISIpUERTA0.position.set( 1278.69, 200.36, 4818.53 );
+					fISIpUERTA.add(infospotfISIpUERTA0);
+infospotfISIpUERTA0.addEventListener('click', function(){
+ChangePanorama('EsquinaEconomica');
+});
+var infospotfISIpUERTA1 = new PANOLENS.Infospot( 512, hotspotIcons[6].data, true );
+					infospotfISIpUERTA1.position.set( -1047.10, 317.43, -4875.82 );
+					fISIpUERTA.add(infospotfISIpUERTA1);
+infospotfISIpUERTA1.addEventListener('click', function(){
+ChangePanorama('Fisidrecha');
+});
+var infospotfISIpUERTA2 = new PANOLENS.Infospot( 512, hotspotIcons[6].data, true );
+					infospotfISIpUERTA2.position.set( -4854.75, 55.53, -1165.45 );
+					fISIpUERTA.add(infospotfISIpUERTA2);
+infospotfISIpUERTA2.addEventListener('click', function(){
+ChangePanorama('Odontoderecha');
+});
+viewer.add( fISIpUERTA );
+$(document).ready(function(){ ChangePanorama('fISIpUERTA'); });
+
+/*panoramas-end*/
+            
+			var stilloading = true;
+			function onProgress ( event ) {
+				
+				progress = event.progress.loaded / event.progress.total * 100;
+				console.log("Loading panorama: " + progress + " ... ");
+				$("#loadingperc").html(Math.ceil(progress) + "%");
+				if(Math.ceil(progress) >= 100){
+					endLoading();
+					stilloading = false;
+
+				}else{
+				    clearTimeout(elTimer);
+					stilloading = true;
+					$("#loading").show();
+				}
+			}
+			
+			var elTimer;
+			function endLoading(){
+			    clearTimeout(elTimer);
+				if(stilloading == false){
+					elTimer = setTimeout(function(){
+						$("#loading").fadeOut();
+					}, 750);
+					
+				}
+			}
+			
+			function hideTemp(){
+				$("#tmp").fadeOut();
+				setTimeout(function(){
+					$("#tmpcontent").html("");
+				},1000);
+			}
+			
+			function showMedia(type, content){
+				switch(type){
+					case 1 :
+						//Image
+						$("#tmpcontent").html("<img src='"+content+"' style='width: 100%;'>");
+						$("#tmp").fadeIn();
+						break;
+					case 2 :
+						//Video
+						$("#tmpcontent").html("<video id='webvideo' controls autoplay style='width: 100%; height: 100%;'><source src='" +content+ "' type='video/mp4'> Your browser does not support the video tag. </video>");
+						$("#tmp").fadeIn();
+						break;
+					case 3 :
+						//Audio
+						$("#tmpcontent").html("<audio controls style='width: 100%;'><source src='"+content+"' type='audio/ogg'>Your browser does not support the audio tag.</audio>");
+						$("#tmp").fadeIn();
+						break;
+					case 4 :
+						//PDF
+						$("#tmpcontent").html("<iframe src='pdfjs/web/viewer.html?file=../../"+content+"' style='width: 100%; height: 99%;'></iframe>");
+						$("#tmp").fadeIn();
+						break;
+				}
+			}
+			
+			
+			
+			//Update Callback
+			viewer.addUpdateCallback(function(){
+				
+				/*viewerupdatecallback*/
+if(viewer.panorama == testpanorama){
+}
+
+if(viewer.panorama == OdontoEsquina){
+}
+
+if(viewer.panorama == OdontoPuerta){
+}
+
+if(viewer.panorama == Fisidrecha){
+}
+
+if(viewer.panorama == TecnologiaMedica){
+}
+
+if(viewer.panorama == Minas){
+}
+
+if(viewer.panorama == prevTecnologia){
+}
+
+if(viewer.panorama == EsquinaEconomica){
+}
+
+if(viewer.panorama == PuertaEconomica){
+}
+
+if(viewer.panorama == Odontoderecha){
+}
+
+if(viewer.panorama == aTRASODONT){
+}
+
+if(viewer.panorama == fISIpUERTA){
+}
+/*viewerupdatecallback-end*/
+				
+				
+			});
+			
+			
+			
+			var hotspotsvisible = true;
+			function ShowMyInfospot(hs, elid){
+				var thehs = toScreenPosition(hs);
+				if(thehs.z < 1){
+					$("#" + elid).css({
+						"top" : (thehs.y - ($("#" + elid).height()/2)) + "px",
+						"left" : (thehs.x - ($("#" + elid).width()/2)) + "px",
+					});
+					if(hotspotsvisible)
+						$("#" + elid).show();
+				}else{
+					$("#" + elid).hide();
+				}
+				
+			}
+			
+			function toScreenPosition(obj)
+			{
+				var vector = new THREE.Vector3();
+				var widthHalf = 0.5 * innerWidth;
+				var heightHalf = 0.5 * innerHeight;
+				
+				//obj.updateMatrixWorld();				
+				vector.setFromMatrixPosition(obj.matrixWorld);
+				
+				
+				vector.project(viewer.camera);
+
+				vector.x = ( vector.x * widthHalf ) + widthHalf;
+				vector.y = - ( vector.y * heightHalf ) + heightHalf;
+
+				
+				return { 
+					x: vector.x,
+					y: vector.y,
+					z: vector.z,
+				};
+
+			};
+			
+			var currentPanorama;
+			function ChangePanorama(panorama){
+				currentPanorama = panorama;
+				HideInfospots(); 
+				$("#loading").fadeIn();
+				//$(".customhotspot").fadeOut();
+				setTimeout(function(){
+					viewer.setPanorama(window[panorama]);
+				}, 100);
+				setTimeout(function(){
+					$("#" + panorama).fadeIn();
+				}, 1000);
+				
+			}
+			
+			
+			
+			
+			
+			function HideInfospots(){
+				$(".customhotspot").fadeOut();
+			}
+
+			/*customjs*//*customjs-end*/
+        </script>
+	</body>
+</html>

@@ -11,12 +11,11 @@ function getColor(d) {
 var info = L.control({position: 'bottomleft'});
   
 info.onAdd = function (map) {
-      this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+      this._div = L.DomUtil.create('div', 'info'); 
       this.update();
       return this._div;
   }; 
   
-  // method that we will use to update the control based on feature properties passed
 info.update = function (props) {
     this._div.innerHTML = '<h1>Facultad</h1>' +  
         (props && props.name  ? '<b>' + props.name + '</b><br />' : 'inserta una palabra');
@@ -79,8 +78,8 @@ geojson = L.geoJson(universidadUNMSM, {
     style: function(feature) {
         return {
             color: 'blue',      // Borde azul por defecto
-            fillColor: 'white', // Relleno blanco
-            weight: 2           // Grosor del borde
+            fillColor: 'white', 
+            weight: 2         
         };
     }
   }).addTo(mapa);

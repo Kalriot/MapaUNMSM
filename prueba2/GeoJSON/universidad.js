@@ -639,20 +639,16 @@ var facultadLayer=L.geoJSON({
   }
 }).addTo(mapa)
 
-
 var popup = L.popup();
 
-
-// Restablecer el estilo cuando se sale del área
 facultadLayer.on('mouseout', function(e) {
   e.target.setStyle({
-      color: 'green',  // Volver al color original del borde
-      fillColor: 'green',  // Volver al color original de relleno
-      fillOpacity: 0.1  // Volver a la opacidad original
+      color: 'green',
+      fillColor: 'green',
+      fillOpacity: 0.1
   });
 });
 
 mapa.on('click', function(e) {
-  // Imprimir en la consola la latitud y longitud del punto donde se hizo clic
   console.log( e.latlng.lat, e.latlng.lng);
 });

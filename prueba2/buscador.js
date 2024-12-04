@@ -1,14 +1,11 @@
-// Obtener los campos de búsqueda
 const searchStartInput = document.getElementById("search-start");
 const suggestionsStartList = document.getElementById("suggestions-start");
 const searchEndInput = document.getElementById("search-end");
 const suggestionsEndList = document.getElementById("suggestions-end");
 
-// Variable global para almacenar las rutas desde el GeoJSON
 let rutas = [];
 const puntosfacultades = {
     "facultades": [
-        
         {
             "nombre": "Facultad de Letras y Ciencias Humanas",
             "coordenadas": [-12.057463861581558, -77.08146536455192]
@@ -148,91 +145,74 @@ const puntosfacultades = {
     ]
 };
 
-
-// Función para cargar el GeoJSON y extraer las rutas (por ejemplo, usando @id)
 fetch('DatFacultades.json')
     .then(response => response.json())
     .then(data => {
-        // Extraer las rutas, en este caso por el nombre de la facultad
         data.features.forEach(feature => {
-            if (feature.properties && feature.properties.name) {  // Aseguramos que el nombre esté presente
+            if (feature.properties && feature.properties.name) {
                 rutas.push({
-                    name: feature.properties.name, // Almacenamos el nombre de la facultad
-                    feature: feature // Almacenamos la feature completa
+                    name: feature.properties.name,
+                    feature: feature
                 });
             }
         });
 
-        // Mostrar todos los 'properties.name' en el console.log
-        console.log("Lista de todas las facultades:");
         rutas.forEach(ruta => {
-            console.log(ruta.name);  // Muestra el nombre de cada facultad
+            console.log(ruta.name);
         });
     })
     .catch(error => console.error('Error al cargar el GeoJSON:', error));
 
-// Función para mostrar las recomendaciones basadas en lo que el usuario escribe
 function showSuggestions(query, suggestionsList) {
     const filteredRutas = rutas.filter(ruta =>
-        ruta.name.toLowerCase().includes(query.toLowerCase()) // Filtrar por nombre
+        ruta.name.toLowerCase().includes(query.toLowerCase())
     );
 
-    // Limpiar las recomendaciones anteriores
     suggestionsList.innerHTML = "";
 
-    // Mostrar las nuevas recomendaciones, asegurándose de que solo se muestre un punto por nombre
     const uniqueNames = new Set();
     filteredRutas.forEach(ruta => {
         if (!uniqueNames.has(ruta.name)) {
             uniqueNames.add(ruta.name);
             const li = document.createElement("li");
-            li.textContent = ruta.name; // Mostrar el nombre de la facultad como sugerencia
-            li.onclick = () => selectSuggestion(ruta, suggestionsList); // Seleccionar con clic
+            li.textContent = ruta.name;
+            li.onclick = () => selectSuggestion(ruta, suggestionsList);
             suggestionsList.appendChild(li);
         }
     });
 }
 
-// Función para seleccionar una facultad
 function selectSuggestion(ruta, suggestionsList) {
-    console.log(ruta.name);  // Depuración: Ver nombre de la facultad seleccionada
+    console.log(ruta.name);
 
-    // Obtener las coordenadas de la facultad (si son un 'Polygon' o 'Point')
     const coords = ruta.feature.geometry.coordinates;
     let latLngs;
     if (Array.isArray(coords[0])) {
-        // Si las coordenadas son de un 'Polygon', convertir cada par de coordenadas a L.latLng
-        latLngs = coords[0].map(coord => L.latLng(coord[1], coord[0]));  // Invertir lat y lng en Leaflet
+        latLngs = coords[0].map(coord => L.latLng(coord[1], coord[0]));
     } else {
-        // Si es un solo punto (Point), usar directamente las coordenadas
-        latLngs = [L.latLng(coords[1], coords[0])];  // Invertir lat y lng en Leaflet
+        latLngs = [L.latLng(coords[1], coords[0])];
     }
 
-    // Rellenar el input con el nombre y las coordenadas correspondientes
     if (suggestionsList === suggestionsStartList) {
         searchStartInput.value = ruta.name;
-        searchStartInput.dataset.coords = JSON.stringify(latLngs);  // Almacenar las coordenadas
+        searchStartInput.dataset.coords = JSON.stringify(latLngs);
     } else {
         searchEndInput.value = ruta.name;
-        searchEndInput.dataset.coords = JSON.stringify(latLngs);  // Almacenar las coordenadas
+        searchEndInput.dataset.coords = JSON.stringify(latLngs);
     }
 
-    suggestionsList.innerHTML = ""; // Limpiar sugerencias
+    suggestionsList.innerHTML = "";
 
-    // Realiza zoom sobre las coordenadas seleccionadas
     const bounds = L.latLngBounds(latLngs);
     mapa.fitBounds(bounds);
-
-    // Llamada para calcular la ruta más corta entre los puntos
 }
 
-// Función para manejar el input del usuario
 searchStartInput.addEventListener("input", (event) => {
     const query = event.target.value;
     if (query) {
         showSuggestions(query, suggestionsStartList);
     } else {
-        suggestionsStartList.innerHTML = ""; // Limpiar cuando el campo está vacío
+        suggestionsStartList.innerHTML = "";
     }
 });
 
@@ -241,11 +221,10 @@ searchEndInput.addEventListener("input", (event) => {
     if (query) {
         showSuggestions(query, suggestionsEndList);
     } else {
-        suggestionsEndList.innerHTML = ""; // Limpiar cuando el campo está vacío
+        suggestionsEndList.innerHTML = "";
     }
 });
 
-// Función para manejar el teclado (Tab y flechas)
 function handleKeyDown(event, suggestionsList, searchInput) {
     const suggestions = Array.from(suggestionsList.getElementsByTagName("li"));
     const activeSuggestion = suggestions.find(s => s.classList.contains("active"));
@@ -257,8 +236,8 @@ function handleKeyDown(event, suggestionsList, searchInput) {
             if (nextSuggestion) {
                 if (activeSuggestion) activeSuggestion.classList.remove("active");
                 nextSuggestion.classList.add("active");
-                searchInput.value = nextSuggestion.textContent; // Rellenar automáticamente
-                nextSuggestion.scrollIntoView({ block: "nearest" }); // Desplazamiento automático
+                searchInput.value = nextSuggestion.textContent;
+                nextSuggestion.scrollIntoView({ block: "nearest" });
             }
         }
     } else if (event.key === "ArrowDown") {
@@ -267,8 +246,8 @@ function handleKeyDown(event, suggestionsList, searchInput) {
         const nextSuggestion = activeSuggestion ? activeSuggestion.nextElementSibling : suggestions[0];
         if (nextSuggestion) {
             nextSuggestion.classList.add("active");
-            searchInput.value = nextSuggestion.textContent; // Rellenar automáticamente
-            nextSuggestion.scrollIntoView({ block: "nearest" }); // Desplazamiento automático
+            searchInput.value = nextSuggestion.textContent;
+            nextSuggestion.scrollIntoView({ block: "nearest" });
         }
     } else if (event.key === "ArrowUp") {
         event.preventDefault();
@@ -276,14 +255,14 @@ function handleKeyDown(event, suggestionsList, searchInput) {
         const prevSuggestion = activeSuggestion ? activeSuggestion.previousElementSibling : suggestions[suggestions.length - 1];
         if (prevSuggestion) {
             prevSuggestion.classList.add("active");
-            searchInput.value = prevSuggestion.textContent; // Rellenar automáticamente
-            prevSuggestion.scrollIntoView({ block: "nearest" }); // Desplazamiento automático
+            searchInput.value = prevSuggestion.textContent;
+            prevSuggestion.scrollIntoView({ block: "nearest" });
         }
     } else if (event.key === "Enter") {
         event.preventDefault();
         if (activeSuggestion) {
             const ruta = rutas.find(r => r.name === activeSuggestion.textContent);
-            if (ruta) selectSuggestion(ruta, suggestionsList); // Seleccionar la sugerencia activa
+            if (ruta) selectSuggestion(ruta, suggestionsList);
         }
     }
 }
@@ -291,19 +270,16 @@ function handleKeyDown(event, suggestionsList, searchInput) {
 searchStartInput.addEventListener("keydown", (event) => handleKeyDown(event, suggestionsStartList, searchStartInput));
 searchEndInput.addEventListener("keydown", (event) => handleKeyDown(event, suggestionsEndList, searchEndInput));
 
-// Función para cerrar la lista de sugerencias si el usuario hace clic fuera del campo de búsqueda
 document.addEventListener("click", (event) => {
     if (!searchStartInput.contains(event.target) && !suggestionsStartList.contains(event.target)) {
-        suggestionsStartList.innerHTML = ""; // Limpiar sugerencias al hacer clic fuera
+        suggestionsStartList.innerHTML = "";
     }
     if (!searchEndInput.contains(event.target) && !suggestionsEndList.contains(event.target)) {
-        suggestionsEndList.innerHTML = ""; // Limpiar sugerencias al hacer clic fuera
+        suggestionsEndList.innerHTML = "";
     }
 });
 
-// Obtener el botón de búsqueda
 const searchRouteButton = document.getElementById("search-route");
-// Función para manejar el clic en el botón de búsqueda
 searchRouteButton.addEventListener("click", () => {
     const startName = searchStartInput.value;
     const endName = searchEndInput.value;
@@ -313,7 +289,6 @@ searchRouteButton.addEventListener("click", () => {
         const endCoords = JSON.parse(searchEndInput.dataset.coords);
 
         if (startCoords && endCoords) {
-            // Verificar si las coordenadas son válidas y convertirlas a formato adecuado
             const startLatLng = startCoords[0];
             const endLatLng = endCoords[0];
 
@@ -326,9 +301,7 @@ searchRouteButton.addEventListener("click", () => {
     }
 });
 
-// Función para calcular la ruta más corta entre los puntos de inicio y fin
 function calcularRuta(startLatLng, endLatLng) {
-    // Validar que startLatLng y endLatLng tengan propiedades lng y lat que sean números
     if (isNaN(startLatLng.lng) || isNaN(startLatLng.lat) || isNaN(endLatLng.lng) || isNaN(endLatLng.lat)) {
         console.error("Coordenadas no válidas:", startLatLng, endLatLng);
         return;
@@ -346,7 +319,6 @@ function calcularRuta(startLatLng, endLatLng) {
                 return [lng, lat];
             });
 
-            // Mostrar en el console.log los nombres de las facultades que se unen
             const facultadesUnidas = rutaNodos.map(node => {
                 const [lat, lng] = node.split(',').map(Number);
                 const facultad = puntosfacultades.facultades.find(f => 
@@ -356,19 +328,15 @@ function calcularRuta(startLatLng, endLatLng) {
             });
             console.log("Facultades que se unen:", facultadesUnidas);
 
-            // Crear la nueva línea de la ruta (la ruta calculada)
             const routeLine = turf.lineString(rutaCoordenadas);
 
-            // Crear la nueva capa de la ruta en el mapa
             if (rutaLayer) {
                 mapa.removeLayer(rutaLayer);
             }
             rutaLayer = L.geoJSON(routeLine, { color: 'blue' }).addTo(mapa);
 
-            // Calcular la distancia y mostrarla en kilómetros
             const distanceKm = turf.length(routeLine, { units: 'kilometers' }).toFixed(2);
 
-            // Asegurarse de que el elemento de distancia esté disponible
             const distanceElement = document.getElementById('distance-value');
             if (distanceElement) {
                 distanceElement.textContent = `${distanceKm} km`;
@@ -381,27 +349,23 @@ function calcularRuta(startLatLng, endLatLng) {
     }
 }
 
-// Función para inicializar la búsqueda
 function initSearch() {
-    // Obtener los campos de búsqueda
     const searchStartInput = document.getElementById("search-start");
     const suggestionsStartList = document.getElementById("suggestions-start");
     const searchEndInput = document.getElementById("search-end");
     const suggestionsEndList = document.getElementById("suggestions-end");
 
-    // Verificar que los elementos existan
     if (!searchStartInput || !suggestionsStartList || !searchEndInput || !suggestionsEndList) {
         console.error("No se encontraron los elementos de búsqueda en el DOM.");
         return;
     }
 
-    // Configurar eventos de búsqueda
     searchStartInput.addEventListener("input", (event) => {
         const query = event.target.value;
         if (query) {
             showSuggestions(query, suggestionsStartList);
         } else {
-            suggestionsStartList.innerHTML = ""; // Limpiar cuando el campo está vacío
+            suggestionsStartList.innerHTML = "";
         }
     });
 
@@ -410,14 +374,12 @@ function initSearch() {
         if (query) {
             showSuggestions(query, suggestionsEndList);
         } else {
-            suggestionsEndList.innerHTML = ""; // Limpiar cuando el campo está vacío
+            suggestionsEndList.innerHTML = "";
         }
     });
 
-    // Configurar eventos de teclado
     searchStartInput.addEventListener("keydown", (event) => handleKeyDown(event, suggestionsStartList, searchStartInput));
     searchEndInput.addEventListener("keydown", (event) => handleKeyDown(event, suggestionsEndList, searchEndInput));
 }
 
-// Llamar a la función de inicialización
 initSearch();

@@ -9945,14 +9945,6 @@ var universidadUNMSM={
 geojson = L.geoJSON(universidadUNMSM, {
   style: function (feature) {
     return { color: 'red', fillColor: 'black', fillOpacity: 0.5 };
-  },
-  pointToLayer: function (feature, latlng) {
-    return L.circleMarker(latlng, {
-      radius: 8,
-      color: 'red',
-      fillColor: 'black',
-      fillOpacity: 0.8
-    });
   }
 }).addTo(mapa);
 

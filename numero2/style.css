@@ -184,3 +184,47 @@ input{
 .mediaclosebutton:hover{
 	color: white;
 }
+
+#virtual-tour-container {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 80%;
+    background: rgba(0, 0, 0, 0.9); /* Hacer el fondo más oscuro */
+    z-index: 1000;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* Añadir sombra */
+    border-radius: 10px; /* Bordes redondeados */
+    padding: 20px; /* Añadir padding */
+    box-sizing: border-box;
+    border: 2px solid #fff; /* Añadir borde blanco */
+}
+
+#virtual-tour-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 10px; /* Bordes redondeados */
+}
+
+#close-virtual-tour {
+    position: absolute;
+    top: 20px; /* Ajustar posición */
+    right: 20px; /* Ajustar posición */
+    background: transparent;
+    color: white;
+    border: 2px solid white; /* Añadir borde blanco */
+    padding: 10px 20px; /* Ajustar padding */
+    cursor: pointer;
+    font-size: 18px; /* Aumentar tamaño de fuente */
+    border-radius: 50%; /* Hacer el botón circular */
+    transition: background 0.3s ease, color 0.3s ease; /* Añadir transición */
+}
+
+#close-virtual-tour:hover {
+    background: white;
+    color: red; /* Cambiar color del texto a rojo al pasar el cursor */
+}
